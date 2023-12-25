@@ -1,6 +1,6 @@
 package com.example.moviemaze.movielist.data.respository
 
-import android.util.Log
+
 import coil.network.HttpException
 import com.example.moviemaze.movielist.data.local.movie.MovieDatabase
 import com.example.moviemaze.movielist.data.mapper.toMovie
@@ -31,34 +31,28 @@ class MovieListRepositoryImpl @Inject constructor(
             val shouldLoadLocalMovie = localMovieList.isNotEmpty() && !forceFetchFromRemote
 
             if (shouldLoadLocalMovie) {
-                Log.d("haha", "10")
                 emit(Resource.Success(
                     data = localMovieList.map { movieEntity ->
                         movieEntity.toMovie(category)
                     }
                 ))
-                Log.d("haha", "11")
                 emit(Resource.Loading(isLoading = true))
                 return@flow
             }
 
-            Log.d("haha", "12")
             val movieListFromApi = try {
                 movieApi.getMoviesList(category, page)
             } catch (e : IOException) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Error loading movies"))
-                Log.d("haha", "13")
                 return@flow
             } catch (e : HttpException) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Error loading movies"))
-                Log.d("haha", "14")
                 return@flow
             } catch (e : Exception) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Error loading movies"))
-                Log.d("haha", "15")
                 return@flow
             }
 
@@ -73,8 +67,6 @@ class MovieListRepositoryImpl @Inject constructor(
                 movieEntities.map { it.toMovie(category) }
             ))
             emit(Resource.Loading(false))
-            Log.d("haha", "16")
-
         }
     }
 
