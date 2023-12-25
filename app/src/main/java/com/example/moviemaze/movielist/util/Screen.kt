@@ -1,9 +1,10 @@
 package com.example.moviemaze.movielist.util
 
-sealed class Screen(
-    //object Home : Screen("main")
-    //object PopularMovieList : Screen("popularMovie")
-    //object UpcomingMovieList : Screen("upcomingMovie")
-    //object Details : Screen("details")
-) {
+import okhttp3.Route
+
+sealed class Screen(val rout : String){
+    data object Home : Screen("main")
+    data object PopularMovieList : Screen("popularMovie")
+    data object UpcomingMovieList : Screen("upcomingMovie")
+    data object Details : Screen("details")
 }
