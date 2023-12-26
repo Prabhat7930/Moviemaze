@@ -8,4 +8,6 @@
     <string name="language">"Language : "</string>
     <string name="vote_count">" Votes"</string>
     <string name="overview">Overview</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="will_release_on">Will release on</string>
 </resources>

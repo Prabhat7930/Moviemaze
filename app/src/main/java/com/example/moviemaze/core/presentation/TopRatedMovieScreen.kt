@@ -15,13 +15,12 @@ import com.example.moviemaze.movielist.presentation.MovieListUIEvent
 import com.example.moviemaze.movielist.util.Category
 
 @Composable
-fun UpcomingMovieScreen(
-    movieListState : MovieListState,
+fun TopRatedMovieScreen(
     navController : NavHostController,
+    movieListState : MovieListState,
     onEvent : (MovieListUIEvent) -> Unit
 ) {
-
-    if (movieListState.upcomingMovieList.isEmpty()) {
+    if (movieListState.topRatedMovieList.isEmpty()) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -35,16 +34,16 @@ fun UpcomingMovieScreen(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 8.dp, horizontal = 4.dp)
         ) {
-            items(movieListState.upcomingMovieList.size) {index ->
+            items(movieListState.topRatedMovieList.size) {index ->
                 MovieItem(
-                    movie = movieListState.upcomingMovieList[index],
+                    movie = movieListState.topRatedMovieList[index],
                     navHostController = navController
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                if (index >= movieListState.upcomingMovieList.size - 1 && !movieListState.isLoading)  {
-                    onEvent(MovieListUIEvent.Paginate(Category.UPCOMING))
+                if (index >= movieListState.topRatedMovieList.size - 1 && !movieListState.isLoading)  {
+                    onEvent(MovieListUIEvent.Paginate(Category.TOP_RATED))
                 }
             }
         }

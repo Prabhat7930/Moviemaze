@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Movie
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Upcoming
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -51,10 +52,12 @@ fun HomeScreen(navController: NavHostController) {
             TopAppBar(
                 title = {
                     Text(
-                        text = if (movieListState.isCurrentPopularScreen)
+                        text = if (movieListState.currentScreen == 1)
                             stringResource(R.string.popular_movies)
+                        else if (movieListState.currentScreen == 2)
+                            stringResource(R.string.upcoming_movies)
                         else
-                            stringResource(R.string.upcoming_movies),
+                            stringResource(R.string.top_rated),
 
                         fontSize = 20.sp
                     )
@@ -89,6 +92,13 @@ fun HomeScreen(navController: NavHostController) {
                         onEvent = movieListViewModel::onEvent
                     )
                 }
+                composable(Screen.TopRatedMovieList.rout) {
+                    TopRatedMovieScreen(
+                        navController = navController,
+                        movieListState = movieListState,
+                        onEvent = movieListViewModel::onEvent
+                    )
+                }
             }
         }
     }
@@ -108,6 +118,11 @@ fun BottomNavBar(
         BottomItem(
             title = stringResource(R.string.upcoming),
             icon = Icons.Rounded.Upcoming
+        ),
+
+        BottomItem(
+            title = stringResource(R.string.top_rated),
+            icon = Icons.Rounded.Star
         )
     )
 
@@ -128,14 +143,19 @@ fun BottomNavBar(
                         selected.intValue = index
                         when(selected.intValue) {
                             0 -> {
-                                onEvent(MovieListUIEvent.Navigate)
+                                onEvent(MovieListUIEvent.Navigate(category = "popular"))
                                 bottomNavController.popBackStack()
                                 bottomNavController.navigate(Screen.PopularMovieList.rout)
                             }
                             1 -> {
-                                onEvent(MovieListUIEvent.Navigate)
+                                onEvent(MovieListUIEvent.Navigate(category = "upcoming"))
                                 bottomNavController.popBackStack()
                                 bottomNavController.navigate(Screen.UpcomingMovieList.rout)
+                            }
+                            2 -> {
+                                onEvent(MovieListUIEvent.Navigate("top_rated"))
+                                bottomNavController.popBackStack()
+                                bottomNavController.navigate(Screen.TopRatedMovieList.rout)
                             }
                         }
                     },

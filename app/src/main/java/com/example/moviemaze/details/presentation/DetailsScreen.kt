@@ -33,6 +33,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -40,10 +41,11 @@ import coil.size.Size
 import com.example.moviemaze.R
 import com.example.moviemaze.movielist.data.remote.MovieApi
 import com.example.moviemaze.movielist.util.RatingBar
+import com.example.moviemaze.movielist.util.Screen
 
 
 @Composable
-fun DetailsScreen() {
+fun DetailsScreen(navController: NavController) {
     val detailsViewModel = hiltViewModel<DetailsViewModel>()
     val detailsState = detailsViewModel.detailsState.collectAsState().value
 
@@ -86,7 +88,6 @@ fun DetailsScreen() {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
 
         Row(
             modifier = Modifier
@@ -175,10 +176,18 @@ fun DetailsScreen() {
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Text(
-                        modifier = Modifier.padding(start = 16.dp),
-                        text = stringResource(R.string.release_date) + movie.release_date
-                    )
+                    if (movie.category == "popular" || movie.category == "top_rated") {
+                        Text(
+                            modifier = Modifier.padding(start = 16.dp),
+                            text = stringResource(R.string.release_date) + movie.release_date
+                        )
+                    }
+                    else {
+                        Text(
+                            modifier = Modifier.padding(16.dp),
+                            text = "Will release on " + movie.release_date
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(10.dp))
 
@@ -210,18 +219,21 @@ fun DetailsScreen() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Text(
-            modifier = Modifier.padding(start = 16.dp),
-            text = "Download Link",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold
-        )
+        if (detailsState.movie?.category == "popular" || detailsState.movie?.category == "top_rated") {
+            Text(
+                modifier = Modifier.padding(start = 16.dp),
+                text = "Download Link",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
+            )
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        HyperlinkText("https://moviesmod.dev/search/${detailsState.movie?.title}")
+            HyperlinkText("https://moviesmod.dev/search/${detailsState.movie.title}")
+        }
 
         Spacer(modifier = Modifier.height(80.dp))
+
         Text(
             modifier = Modifier
                 .padding(start = 16.dp)
@@ -257,5 +269,4 @@ fun HyperlinkText(url: String) {
         )
     }
 }
-
 
