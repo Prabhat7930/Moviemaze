@@ -3,7 +3,7 @@ package com.example.moviemaze.movielist.data.local.movie
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity("MovieEntity")
 data class MovieEntity(
     val adult: Boolean,
     val backdrop_path: String,

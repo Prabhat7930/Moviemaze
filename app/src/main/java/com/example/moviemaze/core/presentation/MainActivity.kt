@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                                 navArgument("movieId") {type = NavType.IntType}
                             )
                         ) {
-                            DetailsScreen(navController)
+                            DetailsScreen()
                         }
                     }
                 }

@@ -30,36 +30,39 @@ class MovieListViewModel @Inject constructor(
     fun onEvent(event : MovieListUIEvent) {
         when(event) {
             is MovieListUIEvent.Navigate -> {
-                if (event.category == Category.POPULAR)
-                _movieListState.update {
-                    it.copy(
-                        currentScreen = 1
-                    )
-                }
-                else if (event.category == Category.UPCOMING) {
-                    _movieListState.update {
+                when (event.category) {
+                    Category.POPULAR -> _movieListState.update {
                         it.copy(
-                            currentScreen = 2
+                            currentScreen = 1
                         )
                     }
-                }
-                else if (event.category == Category.TOP_RATED) {
-                    _movieListState.update {
-                        it.copy(
-                            currentScreen = 3
-                        )
+                    Category.UPCOMING -> {
+                        _movieListState.update {
+                            it.copy(
+                                currentScreen = 2
+                            )
+                        }
+                    }
+                    Category.TOP_RATED -> {
+                        _movieListState.update {
+                            it.copy(
+                                currentScreen = 3
+                            )
+                        }
                     }
                 }
             }
             is MovieListUIEvent.Paginate -> {
-                if (event.category == Category.POPULAR) {
-                    getPopularMovieList(true)
-                }
-                else if (event.category == Category.UPCOMING) {
-                    getUpcomingMovieList(true)
-                }
-                else if (event.category == Category.TOP_RATED) {
-                    getTopRatedMovieList(true)
+                when(event.category) {
+                    Category.POPULAR -> {
+                        getPopularMovieList(true)
+                    }
+                    Category.UPCOMING -> {
+                        getUpcomingMovieList(true)
+                    }
+                    Category.TOP_RATED -> {
+                        getTopRatedMovieList(true)
+                    }
                 }
             }
         }
@@ -87,15 +90,18 @@ class MovieListViewModel @Inject constructor(
                             _movieListState.update {
                                 it.copy(
                                     popularMovieList = movieListState.value.popularMovieList
-                                            + popularList.shuffled(),
-                                    popularMovieListPage = movieListState.value.popularMovieListPage + 1
+                                            + popularList,
+                                    popularMovieListPage = movieListState.value.popularMovieListPage++
                                 )
                             }
                         }
                     }
                     is Resource.Loading -> {
                         _movieListState.update {
-                            it.copy(isLoading = result.isLoading)
+                            it.copy(
+                                isLoading = result.isLoading,
+                                popularMovieListPage = movieListState.value.popularMovieListPage++
+                            )
                         }
                     }
                 }
@@ -124,16 +130,18 @@ class MovieListViewModel @Inject constructor(
                         result.data?.let { upcomingList ->
                             _movieListState.update {
                                 it.copy(
-                                    upcomingMovieList = movieListState.value.upcomingMovieList
-                                            + upcomingList.shuffled(),
-                                    upcomingMovieListPage = movieListState.value.upcomingMovieListPage + 1
+                                    upcomingMovieList = movieListState.value.upcomingMovieList + upcomingList,
+                                    upcomingMovieListPage = movieListState.value.upcomingMovieListPage++
                                 )
                             }
                         }
                     }
                     is Resource.Loading -> {
                         _movieListState.update {
-                            it.copy(isLoading = result.isLoading)
+                            it.copy(
+                                isLoading = result.isLoading,
+                                upcomingMovieListPage = movieListState.value.upcomingMovieListPage++
+                            )
                         }
                     }
                 }
@@ -162,16 +170,18 @@ class MovieListViewModel @Inject constructor(
                         result.data?.let { topRatedList ->
                             _movieListState.update {
                                 it.copy(
-                                    topRatedMovieList = movieListState.value.topRatedMovieList
-                                            + topRatedList.shuffled(),
-                                    topRatedMovieListPage = movieListState.value.topRatedMovieListPage + 1
+                                    topRatedMovieList = movieListState.value.topRatedMovieList + topRatedList,
+                                    topRatedMovieListPage = movieListState.value.topRatedMovieListPage++
                                 )
                             }
                         }
                     }
                     is Resource.Loading -> {
                         _movieListState.update {
-                            it.copy(isLoading = result.isLoading)
+                            it.copy(
+                                isLoading = result.isLoading,
+                                topRatedMovieListPage = movieListState.value.topRatedMovieListPage++
+                            )
                         }
                     }
                 }

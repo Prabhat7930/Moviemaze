@@ -41,11 +41,9 @@ import coil.size.Size
 import com.example.moviemaze.R
 import com.example.moviemaze.movielist.data.remote.MovieApi
 import com.example.moviemaze.movielist.util.RatingBar
-import com.example.moviemaze.movielist.util.Screen
-
 
 @Composable
-fun DetailsScreen(navController: NavController) {
+fun DetailsScreen() {
     val detailsViewModel = hiltViewModel<DetailsViewModel>()
     val detailsState = detailsViewModel.detailsState.collectAsState().value
 

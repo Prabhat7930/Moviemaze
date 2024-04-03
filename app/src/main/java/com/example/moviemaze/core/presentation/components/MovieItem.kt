@@ -48,7 +48,7 @@ fun MovieItem(
     ).state
 
     val defaultColor = MaterialTheme.colorScheme.secondaryContainer
-    var dominantColor = remember { mutableStateOf(defaultColor) }
+    val dominantColor = remember { mutableStateOf(defaultColor) }
 
     Column(
         modifier = Modifier

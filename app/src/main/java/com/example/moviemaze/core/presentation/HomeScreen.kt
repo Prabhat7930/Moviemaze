@@ -52,12 +52,11 @@ fun HomeScreen(navController: NavHostController) {
             TopAppBar(
                 title = {
                     Text(
-                        text = if (movieListState.currentScreen == 1)
-                            stringResource(R.string.popular_movies)
-                        else if (movieListState.currentScreen == 2)
-                            stringResource(R.string.upcoming_movies)
-                        else
-                            stringResource(R.string.top_rated),
+                        text = when (movieListState.currentScreen) {
+                            1 -> stringResource(R.string.popular_movies)
+                            2 -> stringResource(R.string.upcoming_movies)
+                            else -> stringResource(R.string.top_rated)
+                        },
 
                         fontSize = 20.sp
                     )
